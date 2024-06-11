@@ -97,9 +97,19 @@ function updateValues() {
     const x = (point.x - centerX) / radius;
     const y = (centerY - point.y) / radius;
 
-    document.getElementById('sinValue').textContent = y.toFixed(2);
-    document.getElementById('cosValue').textContent = x.toFixed(2);
-    document.getElementById('tanValue').textContent = (y / x).toFixed(2);
+    const sinValue = y.toFixed(2);
+    const cosValue = x.toFixed(2);
+    const tanValue = (y / x).toFixed(2);
+    const secValue = (1 / x).toFixed(2);
+    const cscValue = (1 / y === Infinity ? "Infinity" : (1 / y).toFixed(2));
+    const cotValue = (x / y === Infinity ? "Infinity" : (x / y).toFixed(2));
+
+    document.getElementById('sinValue').textContent = sinValue;
+    document.getElementById('cosValue').textContent = cosValue;
+    document.getElementById('tanValue').textContent = tanValue;
+    document.getElementById('secValue').textContent = secValue;
+    document.getElementById('cscValue').textContent = cscValue;
+    document.getElementById('cotValue').textContent = cotValue;
 }
 
 function isInsideCircle(x, y) {
@@ -107,6 +117,16 @@ function isInsideCircle(x, y) {
     const dy = y - point.y;
     return dx * dx + dy * dy <= point.radius * point.radius;
 }
+
+canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    if (isInsideCircle(x, y)) {
+        dragging = true;
+    }
+});
 
 canvas.addEventListener('mousedown', (e) => {
     const rect = canvas.getBoundingClientRect();
@@ -141,4 +161,4 @@ canvas.addEventListener('mouseup', () => {
 });
 
 drawCircle();
- // Coded by guzzo86
+// coded by guzzo86
