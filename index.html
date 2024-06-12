@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Circle</title>
+    <title>Interactive Unit Circle</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <canvas id="unitCircle" width="600" height="600"></canvas>
         <div class="info">
+            <p>Angle(θ): <span id="angleValue">0.00º</span></p>
+                
             <p>sin(θ): <span id="sinValue">0</span> sec(θ): <span id="secValue">1.00</span></p>
             <p>cos(θ): <span id="cosValue">1</span> csc(θ): <span id="cscValue">Infinity</span></p>
             <p>tan(θ): <span id="tanValue">0</span> cot(θ): <span id="cotValue">Infinity</span></p>
-
+            
             <br>
 
             <p>sin(θ): x</p>
@@ -22,6 +24,9 @@
             <p>sec(θ): 1 / cos(θ)</p>
             <p>csc(θ): 1 / sin(θ)</p>
             <p>cot(θ): cos(θ) / sin(θ)</p>
+
+            <br>
+
         </div>
     </div>
     <script src="script.js"></script>
