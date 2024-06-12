@@ -6,6 +6,7 @@ const centerY = canvas.height / 2;
 const radius = 200;
 const gridSpacing = 60;
 let dragging = false;
+let angleDegrees = 0; // Initialize angle in degrees
 
 const point = {
     x: centerX + radius,
@@ -22,6 +23,7 @@ function drawCircle() {
     ctx.font = '12px Arial';
     ctx.fillStyle = '#fff'; // White text for contrast
 
+    // Draw horizontal grid lines and label x-axis
     for (let x = 0; x <= canvas.width; x += gridSpacing) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -32,6 +34,8 @@ function drawCircle() {
             ctx.fillText(label === Math.floor(label) ? label.toFixed(0) : label.toFixed(1), x, centerY + 15); // Label x-axis
         }
     }    
+
+    // Draw vertical grid lines and label y-axis
     for (let y = 0; y <= canvas.height; y += gridSpacing) {
         ctx.beginPath();
         ctx.moveTo(0, y);
@@ -90,6 +94,7 @@ function drawCircle() {
     ctx.lineTo(centerX, point.y);
     ctx.stroke();
 
+    // Update values
     updateValues();
 }
 
@@ -97,19 +102,22 @@ function updateValues() {
     const x = (point.x - centerX) / radius;
     const y = (centerY - point.y) / radius;
 
-    const sinValue = y.toFixed(2);
-    const cosValue = x.toFixed(2);
-    const tanValue = (y / x).toFixed(2);
-    const secValue = (1 / x).toFixed(2);
-    const cscValue = (1 / y === Infinity ? "Infinity" : (1 / y).toFixed(2));
-    const cotValue = (x / y === Infinity ? "Infinity" : (x / y).toFixed(2));
+    const sinValue = Math.sin(angleDegrees * Math.PI / 180);
+    const cosValue = Math.cos(angleDegrees * Math.PI / 180);
+    const tanValue = Math.tan(angleDegrees * Math.PI / 180);
+    const secValue = 1 / cosValue;
+    const cscValue = (1 / sinValue === Infinity) ? "Infinity" : (1 / sinValue);
+    const cotValue = (cosValue / sinValue === Infinity) ? "Infinity" : (cosValue / sinValue);
 
-    document.getElementById('sinValue').textContent = sinValue;
-    document.getElementById('cosValue').textContent = cosValue;
-    document.getElementById('tanValue').textContent = tanValue;
-    document.getElementById('secValue').textContent = secValue;
-    document.getElementById('cscValue').textContent = cscValue;
-    document.getElementById('cotValue').textContent = cotValue;
+    document.getElementById('sinValue').textContent = sinValue.toFixed(3); // Rounded to two decimal places
+    document.getElementById('cosValue').textContent = cosValue.toFixed(3); // Rounded to two decimal places
+    document.getElementById('tanValue').textContent = tanValue.toFixed(3); // Rounded to two decimal places
+    document.getElementById('secValue').textContent = secValue.toFixed(3); // Rounded to two decimal places
+    document.getElementById('cscValue').textContent = cscValue.toFixed(3); // Rounded to two decimal places
+    document.getElementById('cotValue').textContent = cotValue.toFixed(3); // Rounded to two decimal places
+
+    // Update angle value in degrees (angle increases counter-clockwise)
+    document.getElementById('angleValue').textContent = angleDegrees.toFixed(2) + '°'; // Rounded to two decimal places
 }
 
 function isInsideCircle(x, y) {
@@ -117,16 +125,6 @@ function isInsideCircle(x, y) {
     const dy = y - point.y;
     return dx * dx + dy * dy <= point.radius * point.radius;
 }
-
-canvas.addEventListener('mousedown', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    if (isInsideCircle(x, y)) {
-        dragging = true;
-    }
-});
 
 canvas.addEventListener('mousedown', (e) => {
     const rect = canvas.getBoundingClientRect();
@@ -146,6 +144,11 @@ canvas.addEventListener('mousemove', (e) => {
 
         const dx = x - centerX;
         const dy = y - centerY;
+
+        // Calculate angle in degrees (range: 0 to 359.99º, angle increases counter-clockwise)
+        angleRadians = Math.atan2(dy, dx);
+        angleDegrees = (360 - (angleRadians * 180 / Math.PI)) % 360;
+
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         // Lock point onto the circle
@@ -153,6 +156,9 @@ canvas.addEventListener('mousemove', (e) => {
         point.y = centerY + (dy / distance) * radius;
 
         drawCircle();
+
+        // Update angle value in degrees with 3 decimal places
+        document.getElementById('angleValue').textContent = angleDegrees.toFixed(3) + '°'; // Rounded to three decimal places
     }
 });
 
@@ -161,4 +167,4 @@ canvas.addEventListener('mouseup', () => {
 });
 
 drawCircle();
-// coded by guzzo86
+// Coded by guzzo86
