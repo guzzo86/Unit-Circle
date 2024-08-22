@@ -7,6 +7,7 @@ body {
     background-color: #000; /* Ensure background is black */
     color: #fff;
     margin: 0;
+    padding: 10px 0; /* Added padding to the top and bottom of the page */
     font-family: Arial, sans-serif;
 }
 
