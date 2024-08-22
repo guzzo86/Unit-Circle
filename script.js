@@ -18,7 +18,7 @@ function drawCircle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw grid
-    ctx.strokeStyle = '#444'; // Grid line color
+    ctx.strokeStyle = '#fff'; // White grid lines
     ctx.lineWidth = 1;
     ctx.font = '12px Arial';
     ctx.fillStyle = '#fff'; // Text color for labels
@@ -31,8 +31,7 @@ function drawCircle() {
         ctx.stroke();
         if (x !== centerX) {
             const label = (x < centerX) ? (centerX - x) / gridSpacing * -1 : (x - centerX) / gridSpacing;
-            const offset = label % 1 === 0 ? 0 : 3; // Move labels by 3 pixels if they are not whole numbers
-            ctx.fillText(label.toFixed(1), x - (label > 0 ? offset : -offset), centerY + 15); // Label x-axis
+            ctx.fillText(label.toFixed(1), x - (label > 0 ? 10 : -10), centerY + 15); // Label x-axis
         }
     }
 
@@ -44,8 +43,7 @@ function drawCircle() {
         ctx.stroke();
         if (y !== centerY) {
             const label = (centerY - y) / gridSpacing;
-            const offset = label % 1 === 0 ? 0 : 3; // Move labels by 3 pixels if they are not whole numbers
-            ctx.fillText(label.toFixed(1), centerX + 5, y + (label > 0 ? offset : -offset)); // Label y-axis
+            ctx.fillText(label.toFixed(1), centerX + 5, y + 15); // Label y-axis
         }
     }
 
@@ -106,14 +104,6 @@ function updateValues() {
     const cscValue = (1 / sinValue === Infinity) ? "Infinity" : (1 / sinValue);
     const cotValue = (cosValue / sinValue === Infinity) ? "Infinity" : (cosValue / sinValue);
 
-    document.getElementById('sinValue').value = sinValue.toFixed(3); // Rounded to three decimal places
-    document.getElementById('cosValue').value = cosValue.toFixed(3); // Rounded to three decimal places
-    document.getElementById('tanValue').value = tanValue.toFixed(3); // Rounded to three decimal places
-    document.getElementById('secValue').value = secValue.toFixed(3); // Rounded to three decimal places
-    document.getElementById('cscValue').value = cscValue.toFixed(3); // Rounded to three decimal places
-    document.getElementById('cotValue').value = cotValue.toFixed(3); // Rounded to three decimal places
-
-    // Update angle value in degrees
     document.getElementById('angleInput').value = angleDegrees.toFixed(3) + '°'; // Rounded to three decimal places
 }
 
@@ -173,60 +163,6 @@ function validateInput(value, max, min) {
 
 document.getElementById('angleInput').addEventListener('change', function () {
     let angle = parseFloat(this.value);
-    angle = validateInput(angle, 360, 0);
-    angleDegrees = angle;
-    updateValues();
-    drawCircle();
-});
-
-document.getElementById('sinValue').addEventListener('change', function () {
-    let sin = parseFloat(this.value);
-    let angle = Math.asin(sin) * 180 / Math.PI;
-    angle = validateInput(angle, 360, 0);
-    angleDegrees = angle;
-    updateValues();
-    drawCircle();
-});
-
-document.getElementById('cosValue').addEventListener('change', function () {
-    let cos = parseFloat(this.value);
-    let angle = Math.acos(cos) * 180 / Math.PI;
-    angle = validateInput(angle, 360, 0);
-    angleDegrees = angle;
-    updateValues();
-    drawCircle();
-});
-
-document.getElementBy('tanValue').addEventListener('change', function () {
-    let tan = parseFloat(this.value);
-    let angle = Math.atan(tan) * 180 / Math.PI;
-    angle = validateInput(angle, 360, 0);
-    angleDegrees = angle;
-    updateValues();
-    drawCircle();
-});
-
-document.getElementById('secValue').addEventListener('change', function () {
-    let sec = parseFloat(this.value);
-    let angle = Math.acos(1 / sec) * 180 / Math.PI;
-    angle = validateInput(angle, 360, 0);
-    angleDegrees = angle;
-    updateValues();
-    drawCircle();
-});
-
-document.getElementById('cscValue').addEventListener('change', function () {
-    let csc = parseFloat(this.value);
-    let angle = Math.asin(1 / csc) * 180 / Math.PI;
-    angle = validateInput(angle, 360, 0);
-    angleDegrees = angle;
-    updateValues();
-    drawCircle();
-});
-
-document.getElementById('cotValue').addEventListener('change', function () {
-    let cot = parseFloat(this.value);
-    let angle = Math.atan(1 / cot) * 180 / Math.PI;
     angle = validateInput(angle, 360, 0);
     angleDegrees = angle;
     updateValues();
