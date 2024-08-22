@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-const radius = canvas.width / 2 - 20; // Adjust radius to fit the canvas
+const radius = (canvas.width / 2) - 30; // Adjusted to fit canvas size
 let dragging = false;
 
 const point = {
@@ -105,7 +105,7 @@ function updateValues() {
     const cscValue = (sinValue !== 0) ? (1 / sinValue) : Infinity;
     const cotValue = (sinValue !== 0) ? (cosValue / sinValue) : Infinity;
 
-    document.getElementById('angleInput').value = angleDegrees.toFixed(0);
+    document.getElementById('angleInput').value = angleDegrees.toFixed(3);
     document.getElementById('sinInput').value = sinValue.toFixed(3);
     document.getElementById('cosInput').value = cosValue.toFixed(3);
     document.getElementById('tanInput').value = tanValue.toFixed(3);
@@ -206,14 +206,16 @@ function handleBlur(event) {
     updateFromInput();
 }
 
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        updateFromInput();
+    }
+}
+
 document.querySelectorAll('.info input').forEach(input => {
     input.addEventListener('blur', handleBlur);
-    input.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            updateFromInput();
-        }
-    });
+    input.addEventListener('keypress', handleKeyPress);
 });
 
 canvas.addEventListener('mousedown', handleMouseDown);
