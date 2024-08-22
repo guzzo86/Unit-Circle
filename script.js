@@ -10,8 +10,7 @@ let angleDegrees = 0;
 
 const point = {
     x: centerX + radius,
-    y: centerY,
-    radius: 7
+    y: centerY
 };
 
 function drawCircle() {
@@ -70,7 +69,7 @@ function drawCircle() {
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+    ctx.arc(point.x, point.y, 7, 0, Math.PI * 2);
     ctx.fillStyle = '#fff';
     ctx.fill();
 
@@ -159,6 +158,7 @@ function updateFromInput() {
     let cscInput = parseFloat(document.getElementById('cscInput').value);
     let cotInput = parseFloat(document.getElementById('cotInput').value);
 
+    // Validate and correct inputs
     if (isNaN(angleInput) || angleInput < 0 || angleInput > 360) {
         angleInput = 0;
     }
@@ -167,14 +167,19 @@ function updateFromInput() {
         return;
     }
 
+    // Correct values
+    if (secInput === 0) secInput = Infinity;
+    if (cscInput === 0) cscInput = Infinity;
+    if (cotInput === 0) cotInput = Infinity;
+
+    // Update circle position
     const angleRadians = angleInput * Math.PI / 180;
     const x = cosInput * radius + centerX;
     const y = centerY - sinInput * radius;
     
     point.x = x;
     point.y = y;
-    angleDegrees = angleInput;
-    
+
     drawCircle();
 }
 
@@ -188,18 +193,8 @@ function resetInputs() {
     document.getElementById('cotInput').value = "Infinity";
 }
 
-canvas.addEventListener('mousedown', handleMouseDown);
-canvas.addEventListener('mousemove', handleMouseMove);
-canvas.addEventListener('mouseup', handleMouseUp);
-
-const inputs = document.querySelectorAll('.info input');
-inputs.forEach(input => {
-    input.addEventListener('change', updateFromInput);
-    input.addEventListener('keyup', e => {
-        if (e.key === 'Enter') {
-            updateFromInput();
-        }
-    });
+document.querySelectorAll('.info input').forEach(input => {
+    input.addEventListener('input', updateFromInput);
 });
 
 drawCircle();
