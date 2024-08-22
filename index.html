@@ -3,44 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Circle Calculator</title>
+    <title>Unit Circle</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <canvas id="unitCircle" width="500" height="500"></canvas>
-    <div class="info">
-        <div>
-            <label for="angleInput">Angle (°):</label>
-            <input id="angleInput" type="text" placeholder="0.000">
-        </div>
-        <div>
-            <label for="sinInput">sin(θ):</label>
-            <input id="sinInput" type="text" placeholder="0.000">
-        </div>
-        <div>
-            <label for="cosInput">cos(θ):</label>
-            <input id="cosInput" type="text" placeholder="0.000">
-        </div>
-        <div>
-            <label for="tanInput">tan(θ):</label>
-            <input id="tanInput" type="text" placeholder="0.000">
-        </div>
-        <div>
-            <label for="secInput">sec(θ):</label>
-            <input id="secInput" type="text" placeholder="∞">
-        </div>
-        <div>
-            <label for="cscInput">csc(θ):</label>
-            <input id="cscInput" type="text" placeholder="∞">
-        </div>
-        <div>
-            <label for="cotInput">cot(θ):</label>
-            <input id="cotInput" type="text" placeholder="∞">
-        </div>
-        <div class="formulas">
-            <p>Formulas:</p>
-            <p>sin(θ) = y / r</p>
-            <p>cos(θ) = x / r</p>
+    <div class="container">
+        <canvas id="unitCircle" width="600" height="600"></canvas>
+        <div class="info">
+            <p>Angle(θ): <input type="text" id="angleInput" value="0.00"></p>
+            <p>sin(θ): <input type="text" id="sinValue" readonly> sec(θ): <input type="text" id="secValue" readonly></p>
+            <p>cos(θ): <input type="text" id="cosValue" readonly> csc(θ): <input type="text" id="cscValue" readonly></p>
+            <p>tan(θ): <input type="text" id="tanValue" readonly> cot(θ): <input type="text" id="cotValue" readonly></p>
+            <br>
+            <p>sin(θ) = x</p>
+            <p>cos(θ) = y</p>
             <p>tan(θ) = sin(θ) / cos(θ)</p>
             <p>sec(θ) = 1 / cos(θ)</p>
             <p>csc(θ) = 1 / sin(θ)</p>
