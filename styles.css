@@ -5,8 +5,8 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #000; /* Black background */
-    color: #fff; /* White text color */
+    background-color: #000; /* Background color */
+    color: #fff; /* Text color */
 }
 
 .container {
@@ -16,8 +16,8 @@ body {
 }
 
 canvas {
-    border: 1px solid #fff; /* White border */
-    background-color: #000; /* Black background */
+    border: 1px solid #fff; /* Canvas border color */
+    background-color: #000; /* Canvas background color */
 }
 
 .info {
@@ -27,16 +27,14 @@ canvas {
 .info p {
     margin: 5px;
     font-size: 18px;
-    color: #fff; /* White text color */
+    color: #fff; /* Text color */
 }
 
 input[type="text"] {
-    width: 100px;
-    margin-left: 5px;
-    background: #000; /* Black background for input */
-    color: #fff; /* White text for input */
-    border: 1px solid #fff; /* White border for input */
-    text-align: right;
-    font-size: 18px;
+    background-color: #222; /* Input background color */
+    color: #fff; /* Input text color */
+    border: 1px solid #444; /* Input border color */
+    padding: 5px;
+    width: 100px; /* Adjust width as needed */
+    text-align: center;
 }
-
