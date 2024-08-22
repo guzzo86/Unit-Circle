@@ -4,9 +4,8 @@ const ctx = canvas.getContext('2d');
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const radius = 200;
-const gridSpacing = 60;
+const gridSpacing = radius / 5; // 1 unit on the grid is 0.2 * radius
 let dragging = false;
-let angleDegrees = 0;
 
 const point = {
     x: centerX + radius,
@@ -22,25 +21,25 @@ function drawCircle() {
     ctx.font = '12px Arial';
     ctx.fillStyle = '#fff';
 
-    for (let x = -5; x <= 5; x += 0.2) {
-        const gridX = centerX + x * gridSpacing;
-        ctx.beginPath();
-        ctx.moveTo(gridX, 0);
-        ctx.lineTo(gridX, canvas.height);
-        ctx.stroke();
-        if (x !== 0) {
-            ctx.fillText(x.toFixed(1), gridX, centerY + 15);
-        }
-    }
+    for (let i = -5; i <= 5; i++) {
+        const value = i * 0.2; // 5 positive values: 0.2, 0.4, 0.6, 0.8, 1
+        const gridX = centerX + value * radius;
+        const gridY = centerY - value * radius;
+        
+        if (i !== 0) {
+            // Vertical grid lines
+            ctx.beginPath();
+            ctx.moveTo(gridX, 0);
+            ctx.lineTo(gridX, canvas.height);
+            ctx.stroke();
+            ctx.fillText(value.toFixed(1), gridX + 5, centerY + 15);
 
-    for (let y = -5; y <= 5; y += 0.2) {
-        const gridY = centerY - y * gridSpacing;
-        ctx.beginPath();
-        ctx.moveTo(0, gridY);
-        ctx.lineTo(canvas.width, gridY);
-        ctx.stroke();
-        if (y !== 0) {
-            ctx.fillText(y.toFixed(1), centerX + 5, gridY + 5);
+            // Horizontal grid lines
+            ctx.beginPath();
+            ctx.moveTo(0, gridY);
+            ctx.lineTo(canvas.width, gridY);
+            ctx.stroke();
+            ctx.fillText(value.toFixed(1), centerX + 5, gridY - 5);
         }
     }
 
@@ -93,22 +92,23 @@ function updateValues() {
     const y = (centerY - point.y) / radius;
 
     const angleRadians = Math.atan2(y, x);
-    angleDegrees = (360 - (angleRadians * 180 / Math.PI)) % 360;
+    let angleDegrees = (angleRadians * 180 / Math.PI);
+    angleDegrees = (angleDegrees + 360) % 360; // Normalize to 0-360 degrees
 
-    const sinValue = Math.sin(angleDegrees * Math.PI / 180);
-    const cosValue = Math.cos(angleDegrees * Math.PI / 180);
-    const tanValue = Math.tan(angleDegrees * Math.PI / 180);
-    const secValue = 1 / cosValue;
-    const cscValue = (1 / sinValue === Infinity) ? "Infinity" : (1 / sinValue);
-    const cotValue = (cosValue / sinValue === Infinity) ? "Infinity" : (cosValue / sinValue);
+    const sinValue = Math.sin(angleRadians);
+    const cosValue = Math.cos(angleRadians);
+    const tanValue = Math.tan(angleRadians);
+    const secValue = (cosValue !== 0) ? (1 / cosValue) : Infinity;
+    const cscValue = (sinValue !== 0) ? (1 / sinValue) : Infinity;
+    const cotValue = (sinValue !== 0) ? (cosValue / sinValue) : Infinity;
 
     document.getElementById('angleInput').value = angleDegrees.toFixed(0);
     document.getElementById('sinInput').value = sinValue.toFixed(3);
     document.getElementById('cosInput').value = cosValue.toFixed(3);
     document.getElementById('tanInput').value = tanValue.toFixed(3);
-    document.getElementById('secInput').value = secValue.toFixed(3);
-    document.getElementById('cscInput').value = cscValue;
-    document.getElementById('cotInput').value = cotValue;
+    document.getElementById('secInput').value = secValue === Infinity ? "Infinity" : secValue.toFixed(3);
+    document.getElementById('cscInput').value = cscValue === Infinity ? "Infinity" : cscValue.toFixed(3);
+    document.getElementById('cotInput').value = cotValue === Infinity ? "Infinity" : cotValue.toFixed(3);
 }
 
 function handleMouseDown(e) {
@@ -132,8 +132,11 @@ function handleMouseMove(e) {
 
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        point.x = centerX + (dx / distance) * radius;
-        point.y = centerY + (dy / distance) * radius;
+        // Constrain the movement to the circle's radius
+        const constrainedDistance = Math.min(distance, radius);
+
+        point.x = centerX + (dx / distance) * constrainedDistance;
+        point.y = centerY + (dy / distance) * constrainedDistance;
 
         drawCircle();
     }
@@ -144,9 +147,9 @@ function handleMouseUp() {
 }
 
 function isInsideCircle(x, y) {
-    const dx = x - point.x;
-    const dy = y - point.y;
-    return dx * dx + dy * dy <= point.radius * point.radius;
+    const dx = x - centerX;
+    const dy = y - centerY;
+    return dx * dx + dy * dy <= radius * radius;
 }
 
 function updateFromInput() {
@@ -162,25 +165,33 @@ function updateFromInput() {
     if (isNaN(angleInput) || angleInput < 0 || angleInput > 360) {
         angleInput = 0;
     }
-    if (isNaN(sinInput) || isNaN(cosInput) || isNaN(tanInput) || isNaN(secInput) || isNaN(cscInput) || isNaN(cotInput)) {
-        resetInputs();
-        return;
-    }
 
     // Correct values
+    if (isNaN(sinInput)) sinInput = 0;
+    if (isNaN(cosInput)) cosInput = 1;
+    if (isNaN(tanInput)) tanInput = 0;
+    if (isNaN(secInput)) secInput = 1;
+    if (isNaN(cscInput)) cscInput = Infinity;
+    if (isNaN(cotInput)) cotInput = Infinity;
+
+    // Reset values if invalid
     if (secInput === 0) secInput = Infinity;
     if (cscInput === 0) cscInput = Infinity;
     if (cotInput === 0) cotInput = Infinity;
 
     // Update circle position
-    const angleRadians = angleInput * Math.PI / 180;
-    const x = cosInput * radius + centerX;
-    const y = centerY - sinInput * radius;
-    
-    point.x = x;
-    point.y = y;
+    if (angleInput !== 0) {
+        const angleRadians = angleInput * Math.PI / 180;
+        const x = radius * Math.cos(angleRadians) + centerX;
+        const y = centerY - radius * Math.sin(angleRadians);
 
-    drawCircle();
+        point.x = x;
+        point.y = y;
+
+        drawCircle();
+    } else {
+        resetInputs();
+    }
 }
 
 function resetInputs() {
@@ -196,5 +207,9 @@ function resetInputs() {
 document.querySelectorAll('.info input').forEach(input => {
     input.addEventListener('input', updateFromInput);
 });
+
+canvas.addEventListener('mousedown', handleMouseDown);
+canvas.addEventListener('mousemove', handleMouseMove);
+canvas.addEventListener('mouseup', handleMouseUp);
 
 drawCircle();
