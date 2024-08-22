@@ -3,8 +3,7 @@ const ctx = canvas.getContext('2d');
 
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-const radius = 200;
-const gridSpacing = radius / 5; // 5 positive values: 0.2, 0.4, 0.6, 0.8, 1
+const radius = canvas.width / 2 - 20; // Adjust radius to fit the canvas
 let dragging = false;
 
 const point = {
@@ -21,13 +20,14 @@ function drawCircle() {
     ctx.font = '12px Arial';
     ctx.fillStyle = '#fff';
 
+    // Draw horizontal and vertical grid lines
     for (let i = -5; i <= 5; i++) {
-        const value = i * 0.2; // 5 positive values: 0.2, 0.4, 0.6, 0.8, 1
+        const value = i * 0.2; // Grid intervals: 0.2, 0.4, 0.6, 0.8, 1
         const gridX = centerX + value * radius;
         const gridY = centerY - value * radius;
 
-        // Vertical grid lines
         if (i !== 0) {
+            // Vertical grid lines
             ctx.beginPath();
             ctx.moveTo(gridX, 0);
             ctx.lineTo(gridX, canvas.height);
@@ -43,6 +43,7 @@ function drawCircle() {
         }
     }
 
+    // Draw axes
     ctx.strokeStyle = '#888';
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -54,24 +55,26 @@ function drawCircle() {
     ctx.lineTo(canvas.width, centerY);
     ctx.stroke();
 
-    ctx.fillText('0', centerX + 5, centerY + 15);
-
+    // Draw unit circle
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.stroke();
 
+    // Draw radius line and point
+    ctx.strokeStyle = '#f00';
+    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(point.x, point.y);
     ctx.stroke();
-
     ctx.beginPath();
     ctx.arc(point.x, point.y, 7, 0, Math.PI * 2);
     ctx.fillStyle = '#fff';
     ctx.fill();
 
+    // Draw horizontal and vertical lines from point
     ctx.strokeStyle = '#f00';
     ctx.lineWidth = 1;
     ctx.beginPath();
