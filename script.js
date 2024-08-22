@@ -22,7 +22,7 @@ function drawCircle() {
     ctx.fillStyle = '#fff';
 
     // Draw horizontal and vertical grid lines
-    for (let i = -7; i <= 7; i++) {
+    for (let i = -8; i <= 8; i++) {
         const value = i * gridInterval; // Grid intervals
         const gridX = centerX + value * radius;
         const gridY = centerY - value * radius;
@@ -63,26 +63,19 @@ function drawCircle() {
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Draw radius line and point
-    ctx.strokeStyle = '#f00';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(point.x, point.y);
-    ctx.stroke();
+    // Draw point
     ctx.beginPath();
     ctx.arc(point.x, point.y, 7, 0, Math.PI * 2);
     ctx.fillStyle = '#fff';
     ctx.fill();
 
     // Draw horizontal and vertical lines from point
-    ctx.strokeStyle = '#f00';
+    ctx.strokeStyle = '#00F';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(point.x, point.y);
     ctx.lineTo(point.x, centerY);
     ctx.stroke();
-    ctx.strokeStyle = '#00F';
     ctx.beginPath();
     ctx.moveTo(point.x, point.y);
     ctx.lineTo(centerX, point.y);
