@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const radius = 200;
-const gridSpacing = radius / 5; // 1 unit on the grid is 0.2 * radius
+const gridSpacing = radius / 5; // 5 positive values: 0.2, 0.4, 0.6, 0.8, 1
 let dragging = false;
 
 const point = {
@@ -25,9 +25,9 @@ function drawCircle() {
         const value = i * 0.2; // 5 positive values: 0.2, 0.4, 0.6, 0.8, 1
         const gridX = centerX + value * radius;
         const gridY = centerY - value * radius;
-        
+
+        // Vertical grid lines
         if (i !== 0) {
-            // Vertical grid lines
             ctx.beginPath();
             ctx.moveTo(gridX, 0);
             ctx.lineTo(gridX, canvas.height);
@@ -161,25 +161,20 @@ function updateFromInput() {
     let cscInput = parseFloat(document.getElementById('cscInput').value);
     let cotInput = parseFloat(document.getElementById('cotInput').value);
 
-    // Validate and correct inputs
+    // Validate angle input
     if (isNaN(angleInput) || angleInput < 0 || angleInput > 360) {
         angleInput = 0;
     }
 
-    // Correct values
+    // Validate and correct other values
     if (isNaN(sinInput)) sinInput = 0;
     if (isNaN(cosInput)) cosInput = 1;
     if (isNaN(tanInput)) tanInput = 0;
-    if (isNaN(secInput)) secInput = 1;
-    if (isNaN(cscInput)) cscInput = Infinity;
+    if (isNaN(secInput) || secInput === 0) secInput = Infinity;
+    if (isNaN(cscInput) || cscInput === 0) cscInput = Infinity;
     if (isNaN(cotInput)) cotInput = Infinity;
 
-    // Reset values if invalid
-    if (secInput === 0) secInput = Infinity;
-    if (cscInput === 0) cscInput = Infinity;
-    if (cotInput === 0) cotInput = Infinity;
-
-    // Update circle position
+    // Update circle position based on angle input
     if (angleInput !== 0) {
         const angleRadians = angleInput * Math.PI / 180;
         const x = radius * Math.cos(angleRadians) + centerX;
@@ -204,8 +199,18 @@ function resetInputs() {
     document.getElementById('cotInput').value = "Infinity";
 }
 
+function handleBlur(event) {
+    updateFromInput();
+}
+
 document.querySelectorAll('.info input').forEach(input => {
-    input.addEventListener('input', updateFromInput);
+    input.addEventListener('blur', handleBlur);
+    input.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            updateFromInput();
+        }
+    });
 });
 
 canvas.addEventListener('mousedown', handleMouseDown);
