@@ -3,64 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Circle</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #000;
-            color: #fff;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        canvas {
-            border: 1px solid #fff;
-        }
-        .info {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-        .info label {
-            margin-bottom: 5px;
-        }
-        .info input {
-            width: 100px;
-            margin-right: 10px;
-            padding: 5px;
-            background: #333;
-            border: 1px solid #444;
-            color: #fff;
-            border-radius: 4px;
-            text-align: right;
-        }
-        .info .formulas {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #aaa;
-        }
-    </style>
+    <title>Unit Circle Calculator</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <canvas id="unitCircle" width="500" height="500"></canvas>
     <div class="info">
-        <label>Angle (Degrees): <input id="angleInput" type="number" step="0.001" value="0"></label>
-        <label>Sin: <input id="sinInput" type="number" step="0.001" value="0"></label>
-        <label>Cos: <input id="cosInput" type="number" step="0.001" value="1"></label>
-        <label>Tan: <input id="tanInput" type="number" step="0.001" value="0"></label>
-        <label>Sec: <input id="secInput" type="number" step="0.001" value="1"></label>
-        <label>Csc: <input id="cscInput" type="text" value="Infinity"></label>
-        <label>Cot: <input id="cotInput" type="text" value="Infinity"></label>
+        <div>
+            <label for="angleInput">Angle (°):</label>
+            <input id="angleInput" type="text" placeholder="0.000">
+        </div>
+        <div>
+            <label for="sinInput">sin(θ):</label>
+            <input id="sinInput" type="text" placeholder="0.000">
+        </div>
+        <div>
+            <label for="cosInput">cos(θ):</label>
+            <input id="cosInput" type="text" placeholder="0.000">
+        </div>
+        <div>
+            <label for="tanInput">tan(θ):</label>
+            <input id="tanInput" type="text" placeholder="0.000">
+        </div>
+        <div>
+            <label for="secInput">sec(θ):</label>
+            <input id="secInput" type="text" placeholder="∞">
+        </div>
+        <div>
+            <label for="cscInput">csc(θ):</label>
+            <input id="cscInput" type="text" placeholder="∞">
+        </div>
+        <div>
+            <label for="cotInput">cot(θ):</label>
+            <input id="cotInput" type="text" placeholder="∞">
+        </div>
         <div class="formulas">
-            Sin: <code>Math.sin(angleRadians)</code><br>
-            Cos: <code>Math.cos(angleRadians)</code><br>
-            Tan: <code>Math.tan(angleRadians)</code><br>
-            Sec: <code>1 / Math.cos(angleRadians)</code><br>
-            Csc: <code>1 / Math.sin(angleRadians)</code><br>
-            Cot: <code>Math.cos(angleRadians) / Math.sin(angleRadians)</code>
+            <p>Formulas:</p>
+            <p>sin(θ) = y / r</p>
+            <p>cos(θ) = x / r</p>
+            <p>tan(θ) = sin(θ) / cos(θ)</p>
+            <p>sec(θ) = 1 / cos(θ)</p>
+            <p>csc(θ) = 1 / sin(θ)</p>
+            <p>cot(θ) = cos(θ) / sin(θ)</p>
         </div>
     </div>
     <script src="script.js"></script>
