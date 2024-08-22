@@ -22,7 +22,7 @@ function drawCircle() {
     ctx.fillStyle = '#fff';
 
     // Draw horizontal and vertical grid lines
-    for (let i = -7; i <= 7; i++) {
+    for (let i = -8; i <= 8; i++) {
         const value = i * gridInterval; // Grid intervals
         const gridX = centerX + value * radius;
         const gridY = centerY - value * radius;
@@ -45,12 +45,14 @@ function drawCircle() {
     }
 
     // Draw axes
-    ctx.strokeStyle = '#888';
+    ctx.strokeStyle = '#f00'; // X-axis color: red
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(centerX, 0);
     ctx.lineTo(centerX, canvas.height);
     ctx.stroke();
+
+    ctx.strokeStyle = '#888'; // Y-axis color: grey
     ctx.beginPath();
     ctx.moveTo(0, centerY);
     ctx.lineTo(canvas.width, centerY);
@@ -136,6 +138,59 @@ function isInsideCircle(x, y) {
     const dy = y - centerY;
     return dx * dx + dy * dy <= radius * radius;
 }
+
+function validateInput(inputId, max = 360, min = 0) {
+    const input = document.getElementById(inputId);
+    let value = parseFloat(input.value);
+
+    if (isNaN(value)) {
+        value = 0;
+    } else if (value > max) {
+        value = max;
+    } else if (value < min) {
+        value = min;
+    }
+
+    input.value = value.toFixed(3);
+
+    return value;
+}
+
+function updateAllValues() {
+    const angleInput = document.getElementById('angleInput');
+    const angle = validateInput('angleInput');
+
+    const angleRadians = angle * Math.PI / 180;
+    const sinValue = Math.sin(angleRadians);
+    const cosValue = Math.cos(angleRadians);
+    const tanValue = Math.tan(angleRadians);
+    const secValue = (cosValue !== 0) ? (1 / cosValue) : Infinity;
+    const cscValue = (sinValue !== 0) ? (1 / sinValue) : Infinity;
+    const cotValue = (sinValue !== 0) ? (cosValue / sinValue) : Infinity;
+
+    document.getElementById('sinInput').value = sinValue.toFixed(3);
+    document.getElementById('cosInput').value = cosValue.toFixed(3);
+    document.getElementById('tanInput').value = tanValue.toFixed(3);
+    document.getElementById('secInput').value = secValue === Infinity ? "∞" : secValue.toFixed(3);
+    document.getElementById('cscInput').value = cscValue === Infinity ? "∞" : cscValue.toFixed(3);
+    document.getElementById('cotInput').value = cotValue === Infinity ? "∞" : cotValue.toFixed(3);
+
+    const x = (point.x - centerX) / radius;
+    const y = (centerY - point.y) / radius;
+    const distance = Math.sqrt(x * x + y * y);
+    point.x = centerX + (x / distance) * radius;
+    point.y = centerY + (y / distance) * radius;
+
+    drawCircle();
+}
+
+document.getElementById('angleInput').addEventListener('change', updateAllValues);
+document.getElementById('sinInput').addEventListener('change', updateAllValues);
+document.getElementById('cosInput').addEventListener('change', updateAllValues);
+document.getElementById('tanInput').addEventListener('change', updateAllValues);
+document.getElementById('secInput').addEventListener('change', updateAllValues);
+document.getElementById('cscInput').addEventListener('change', updateAllValues);
+document.getElementById('cotInput').addEventListener('change', updateAllValues);
 
 canvas.addEventListener('mousedown', handleMouseDown);
 canvas.addEventListener('mousemove', handleMouseMove);
