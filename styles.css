@@ -1,34 +1,52 @@
 body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #000; /* Ensure background is black */
+    color: #fff;
     margin: 0;
-    padding: 0;
-    background-color: black;
-    color: white;
     font-family: Arial, sans-serif;
 }
 
-#unitCircle {
-    display: block;
-    margin: 20px auto;
-    border: 2px solid #fff;
+canvas {
+    border: 1px solid #fff;
 }
 
 .info {
-    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.input-group {
-    margin: 10px 0;
+.info div {
+    margin-bottom: 10px;
 }
 
-label {
-    display: inline-block;
+.info label {
+    margin-right: 10px;
+}
+
+.info input {
     width: 150px;
-    text-align: left;
-    font-weight: bold;
+    padding: 5px;
+    background: #333;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 4px;
+    text-align: right;
 }
 
-input {
-    width: 100px;
-    padding: 5px;
-    color: black;
+.info .formulas {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+input[type="text"]::-webkit-inner-spin-button, 
+input[type="text"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
