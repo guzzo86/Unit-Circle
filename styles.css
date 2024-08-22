@@ -29,3 +29,9 @@ input[type="number"] {
     border-radius: 5px;
     padding: 5px;
 }
+
+.formulas {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #ccc;
+}
