@@ -65,6 +65,19 @@ function drawCircle() {
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.stroke();
 
+    // Draw lines connecting dot to axes
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(centerX, point.y);
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(point.x, centerY);
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
+
     // Draw point
     ctx.beginPath();
     ctx.arc(point.x, point.y, 7, 0, Math.PI * 2);
