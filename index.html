@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Circle with Trigonometric Values</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Unit Circle</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <canvas id="unitCircle" width="600" height="600"></canvas>
         <div class="info">
-            <p>Angle (θ): <input type="number" id="angleInput" value="0" step="0.01" />°</p>
-            <p>sin(θ): <input type="number" id="sinInput" value="0" step="0.01" /></p>
-            <p>cos(θ): <input type="number" id="cosInput" value="1" step="0.01" /></p>
-            <p>tan(θ): <input type="number" id="tanInput" value="0" step="0.01" /></p>
-            <p>sec(θ): <input type="number" id="secInput" value="1" step="0.01" /></p>
-            <p>csc(θ): <input type="number" id="cscInput" value="Infinity" step="0.01" /></p>
-            <p>cot(θ): <input type="number" id="cotInput" value="Infinity" step="0.01" /></p>
-            
-            <!-- Add formulas below cot -->
+            <p>Angle(θ): <input type="number" id="angleInput" value="0" min="0" max="360">°</p>
+            <p>sin(θ): <input type="number" id="sinInput" value="0" step="any"></p>
+            <p>cos(θ): <input type="number" id="cosInput" value="1" step="any"></p>
+            <p>tan(θ): <input type="number" id="tanInput" value="0" step="any"></p>
+            <p>sec(θ): <input type="number" id="secInput" value="1" step="any"></p>
+            <p>csc(θ): <input type="number" id="cscInput" value="Infinity" step="any"></p>
+            <p>cot(θ): <input type="number" id="cotInput" value="Infinity" step="any"></p>
             <div class="formulas">
-                <p>sin(θ) = ±√(1 - cos²(θ))</p>
-                <p>cot(θ) = cos(θ) / sin(θ)</p>
-                <p>sec(θ) = 1 / cos(θ)</p>
-                <p>csc(θ) = 1 / sin(θ)</p>
-                <p>tan(θ) = sin(θ) / cos(θ)</p>
+                <p>sin(θ): y</p>
+                <p>cos(θ): x</p>
+                <p>tan(θ): sin(θ) / cos(θ)</p>
+                <p>sec(θ): 1 / cos(θ)</p>
+                <p>csc(θ): 1 / sin(θ)</p>
+                <p>cot(θ): cos(θ) / sin(θ)</p>
             </div>
         </div>
     </div>
