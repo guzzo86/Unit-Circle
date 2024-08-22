@@ -6,7 +6,6 @@ const centerY = canvas.height / 2;
 const radius = 200;
 const gridSpacing = 60;
 let dragging = false;
-let angleDegrees = 0; // Initialize angle in degrees
 
 const point = {
     x: centerX + radius,
@@ -18,12 +17,11 @@ function drawCircle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw grid
-    ctx.strokeStyle = '#fff'; // White grid lines
+    ctx.strokeStyle = '#444'; // Lighter grid lines for contrast
     ctx.lineWidth = 1;
     ctx.font = '12px Arial';
-    ctx.fillStyle = '#fff'; // Text color for labels
+    ctx.fillStyle = '#fff'; // White text for contrast
 
-    // Draw horizontal grid lines and labels
     for (let x = 0; x <= canvas.width; x += gridSpacing) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -31,11 +29,9 @@ function drawCircle() {
         ctx.stroke();
         if (x !== centerX) {
             const label = (x < centerX) ? (centerX - x) / gridSpacing * -1 : (x - centerX) / gridSpacing;
-            ctx.fillText(label.toFixed(1), x - (label > 0 ? 10 : -10), centerY + 15); // Label x-axis
+            ctx.fillText(label === Math.floor(label) ? label.toFixed(0) : label.toFixed(1), x, centerY + 15); // Label x-axis
         }
-    }
-
-    // Draw vertical grid lines and labels
+    }    
     for (let y = 0; y <= canvas.height; y += gridSpacing) {
         ctx.beginPath();
         ctx.moveTo(0, y);
@@ -43,18 +39,17 @@ function drawCircle() {
         ctx.stroke();
         if (y !== centerY) {
             const label = (centerY - y) / gridSpacing;
-            ctx.fillText(label.toFixed(1), centerX + 5, y + 15); // Label y-axis
+            ctx.fillText(label === Math.floor(label) ? label.toFixed(0) : label.toFixed(1), centerX + 5, y + 5); // Label y-axis
         }
     }
 
     // Draw coordinate axes
-    ctx.strokeStyle = '#f00'; // Red for x-axis
+    ctx.strokeStyle = '#888';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(centerX, 0);
     ctx.lineTo(centerX, canvas.height);
     ctx.stroke();
-    ctx.strokeStyle = '#f00'; // Red for y-axis
     ctx.beginPath();
     ctx.moveTo(0, centerY);
     ctx.lineTo(canvas.width, centerY);
@@ -64,32 +59,37 @@ function drawCircle() {
     ctx.fillText('0', centerX + 5, centerY + 15);
 
     // Draw unit circle
-    ctx.strokeStyle = '#fff'; // White circle color
+    ctx.strokeStyle = '#fff'; // White circle for contrast
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
     ctx.stroke();
 
+    // Draw radius line
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
+
     // Draw point
     ctx.beginPath();
     ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
-    ctx.fillStyle = '#fff'; // White point color
+    ctx.fillStyle = '#fff'; // White point for visibility
     ctx.fill();
 
     // Draw perpendicular lines to x and y axes
-    ctx.strokeStyle = '#f00'; // Red for vertical line
+    ctx.strokeStyle = '#f00'; // Red lines for visibility
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(point.x, point.y);
     ctx.lineTo(point.x, centerY);
     ctx.stroke();
-    ctx.strokeStyle = '#00F'; // Blue for horizontal line
+    ctx.strokeStyle = '#00F'; // Blue lines for visibility
     ctx.beginPath();
     ctx.moveTo(point.x, point.y);
     ctx.lineTo(centerX, point.y);
     ctx.stroke();
 
-    // Update values
     updateValues();
 }
 
@@ -97,14 +97,9 @@ function updateValues() {
     const x = (point.x - centerX) / radius;
     const y = (centerY - point.y) / radius;
 
-    const sinValue = Math.sin(angleDegrees * Math.PI / 180);
-    const cosValue = Math.cos(angleDegrees * Math.PI / 180);
-    const tanValue = Math.tan(angleDegrees * Math.PI / 180);
-    const secValue = 1 / cosValue;
-    const cscValue = (1 / sinValue === Infinity) ? "Infinity" : (1 / sinValue);
-    const cotValue = (cosValue / sinValue === Infinity) ? "Infinity" : (cosValue / sinValue);
-
-    document.getElementById('angleInput').value = angleDegrees.toFixed(3) + '°'; // Rounded to three decimal places
+    document.getElementById('sinValue').textContent = y.toFixed(2);
+    document.getElementById('cosValue').textContent = x.toFixed(2);
+    document.getElementById('tanValue').textContent = (y / x).toFixed(2);
 }
 
 function isInsideCircle(x, y) {
@@ -131,11 +126,6 @@ canvas.addEventListener('mousemove', (e) => {
 
         const dx = x - centerX;
         const dy = y - centerY;
-
-        // Calculate angle in degrees (range: 0 to 359.999º, angle increases counter-clockwise)
-        const angleRadians = Math.atan2(dy, dx);
-        angleDegrees = (360 - (angleRadians * 180 / Math.PI)) % 360;
-
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         // Lock point onto the circle
@@ -143,9 +133,6 @@ canvas.addEventListener('mousemove', (e) => {
         point.y = centerY + (dy / distance) * radius;
 
         drawCircle();
-
-        // Update angle value in degrees
-        document.getElementById('angleInput').value = angleDegrees.toFixed(3) + '°'; // Rounded to three decimal places
     }
 });
 
@@ -153,20 +140,5 @@ canvas.addEventListener('mouseup', () => {
     dragging = false;
 });
 
-// Handle input validation and updates
-function validateInput(value, max, min) {
-    if (isNaN(value) || value === '' || value < min || value > max) {
-        return 0;
-    }
-    return Math.max(min, Math.min(value, max));
-}
-
-document.getElementById('angleInput').addEventListener('change', function () {
-    let angle = parseFloat(this.value);
-    angle = validateInput(angle, 360, 0);
-    angleDegrees = angle;
-    updateValues();
-    drawCircle();
-});
-
 drawCircle();
+ // Coded by guzzo86
