@@ -1,53 +1,42 @@
 body {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Black background */
+    color: #fff; /* White text color */
+}
+
+.container {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #000; /* Ensure background is black */
-    color: #fff;
-    margin: 0;
-    padding: 10px 0; /* Added padding to the top and bottom of the page */
-    font-family: Arial, sans-serif;
 }
 
 canvas {
-    border: 1px solid #fff;
+    border: 1px solid #fff; /* White border */
+    background-color: #000; /* Black background */
 }
 
 .info {
     margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
-.info div {
-    margin-bottom: 10px;
+.info p {
+    margin: 5px;
+    font-size: 18px;
+    color: #fff; /* White text color */
 }
 
-.info label {
-    margin-right: 10px;
-}
-
-.info input {
-    width: 150px;
-    padding: 5px;
-    background: #333;
-    border: 1px solid #444;
-    color: #fff;
-    border-radius: 4px;
+input[type="text"] {
+    width: 100px;
+    margin-left: 5px;
+    background: #000; /* Black background for input */
+    color: #fff; /* White text for input */
+    border: 1px solid #fff; /* White border for input */
     text-align: right;
+    font-size: 18px;
 }
 
-.info .formulas {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #aaa;
-}
-
-input[type="text"]::-webkit-inner-spin-button, 
-input[type="text"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
