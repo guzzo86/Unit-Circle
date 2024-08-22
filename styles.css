@@ -21,13 +21,14 @@ body {
 }
 
 label {
-    display: block;
+    display: inline-block;
+    width: 150px;
+    text-align: left;
     font-weight: bold;
 }
 
 input {
     width: 100px;
     padding: 5px;
-    margin-left: 10px;
     color: black;
 }
