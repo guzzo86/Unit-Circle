@@ -22,7 +22,7 @@ function drawCircle() {
     ctx.fillStyle = '#fff';
 
     // Draw horizontal and vertical grid lines
-    for (let i = -8; i <= 8; i++) {
+    for (let i = -7; i <= 7; i++) {
         const value = i * gridInterval; // Grid intervals
         const gridX = centerX + value * radius;
         const gridY = centerY - value * radius;
@@ -69,18 +69,6 @@ function drawCircle() {
     ctx.fillStyle = '#fff';
     ctx.fill();
 
-    // Draw horizontal and vertical lines from point
-    ctx.strokeStyle = '#00F';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(point.x, point.y);
-    ctx.lineTo(point.x, centerY);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(point.x, point.y);
-    ctx.lineTo(centerX, point.y);
-    ctx.stroke();
-
     updateValues();
 }
 
@@ -103,9 +91,9 @@ function updateValues() {
     document.getElementById('sinInput').value = sinValue.toFixed(3);
     document.getElementById('cosInput').value = cosValue.toFixed(3);
     document.getElementById('tanInput').value = tanValue.toFixed(3);
-    document.getElementById('secInput').value = secValue === Infinity ? "Infinity" : secValue.toFixed(3);
-    document.getElementById('cscInput').value = cscValue === Infinity ? "Infinity" : cscValue.toFixed(3);
-    document.getElementById('cotInput').value = cotValue === Infinity ? "Infinity" : cotValue.toFixed(3);
+    document.getElementById('secInput').value = secValue === Infinity ? "∞" : secValue.toFixed(3);
+    document.getElementById('cscInput').value = cscValue === Infinity ? "∞" : cscValue.toFixed(3);
+    document.getElementById('cotInput').value = cotValue === Infinity ? "∞" : cotValue.toFixed(3);
 }
 
 function handleMouseDown(e) {
@@ -148,69 +136,6 @@ function isInsideCircle(x, y) {
     const dy = y - centerY;
     return dx * dx + dy * dy <= radius * radius;
 }
-
-function updateFromInput() {
-    let angleInput = parseFloat(document.getElementById('angleInput').value);
-    let sinInput = parseFloat(document.getElementById('sinInput').value);
-    let cosInput = parseFloat(document.getElementById('cosInput').value);
-    let tanInput = parseFloat(document.getElementById('tanInput').value);
-    let secInput = parseFloat(document.getElementById('secInput').value);
-    let cscInput = parseFloat(document.getElementById('cscInput').value);
-    let cotInput = parseFloat(document.getElementById('cotInput').value);
-
-    // Validate angle input
-    if (isNaN(angleInput) || angleInput < 0 || angleInput > 360) {
-        angleInput = 0;
-    }
-
-    // Validate and correct other values
-    if (isNaN(sinInput)) sinInput = 0;
-    if (isNaN(cosInput)) cosInput = 1;
-    if (isNaN(tanInput)) tanInput = 0;
-    if (isNaN(secInput) || secInput === 0) secInput = Infinity;
-    if (isNaN(cscInput) || cscInput === 0) cscInput = Infinity;
-    if (isNaN(cotInput)) cotInput = Infinity;
-
-    // Update circle position based on angle input
-    if (angleInput !== 0) {
-        const angleRadians = angleInput * Math.PI / 180;
-        const x = radius * Math.cos(angleRadians) + centerX;
-        const y = centerY - radius * Math.sin(angleRadians);
-
-        point.x = x;
-        point.y = y;
-
-        drawCircle();
-    } else {
-        resetInputs();
-    }
-}
-
-function resetInputs() {
-    document.getElementById('angleInput').value = 0;
-    document.getElementById('sinInput').value = 0;
-    document.getElementById('cosInput').value = 1;
-    document.getElementById('tanInput').value = 0;
-    document.getElementById('secInput').value = 1;
-    document.getElementById('cscInput').value = "Infinity";
-    document.getElementById('cotInput').value = "Infinity";
-}
-
-function handleBlur(event) {
-    updateFromInput();
-}
-
-function handleKeyPress(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        updateFromInput();
-    }
-}
-
-document.querySelectorAll('.info input').forEach(input => {
-    input.addEventListener('blur', handleBlur);
-    input.addEventListener('keypress', handleKeyPress);
-});
 
 canvas.addEventListener('mousedown', handleMouseDown);
 canvas.addEventListener('mousemove', handleMouseMove);
