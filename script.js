@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d');
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const radius = (canvas.width / 2) - 30; // Adjusted to fit canvas size
+const gridInterval = 0.2; // Grid intervals: 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.5
 let dragging = false;
 
 const point = {
@@ -21,8 +22,8 @@ function drawCircle() {
     ctx.fillStyle = '#fff';
 
     // Draw horizontal and vertical grid lines
-    for (let i = -5; i <= 5; i++) {
-        const value = i * 0.2; // Grid intervals: 0.2, 0.4, 0.6, 0.8, 1
+    for (let i = -7; i <= 7; i++) {
+        const value = i * gridInterval; // Grid intervals
         const gridX = centerX + value * radius;
         const gridY = centerY - value * radius;
 
